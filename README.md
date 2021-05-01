@@ -86,5 +86,7 @@ Login to the web server:
 `docker-compose exec web bash`
 
 Run deployer commands:
-
-`dep deploy staging`
+```shell
+cd private/
+dep deploy staging
+```
