@@ -70,12 +70,11 @@ volumes:
 
 ## Deployer Support
 
-If you are using PHP Deployer to handle deployments, two volume mount points exist for `deployer.phar` and `deploy.php`. This allows you to mount these Deployer files from the project root inside the container so that deployment can be made from inside the containers.
+If you are using PHP Deployer to handle deployments, a volume mount point exists for `deploy.php`. This allows you to mount the Deployer config from the project root inside the container so that deployments can be made from inside the container.
 
-Uncomment these two lines on the web service in `docker-compose.yml`:
+Uncomment thi line on the web service in `docker-compose.yml`:
 ```yaml
 - "./deploy.php:/var/www/vhosts/myvhost/private/deploy.php"
-- "./deployer.phar:/var/www/vhosts/myvhost/private/deployer.phar"
 ```
 
 If your containers were running, restart them:
@@ -88,4 +87,4 @@ Login to the web server:
 
 Run deployer commands:
 
-`php private/deployer.phar dep staging`
+`dep deploy staging`

@@ -21,6 +21,5 @@ services:
       - "./conf/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
       #- "./src:/var/www/vhosts/myvhost"
       #- "./deploy.php:/var/www/vhosts/myvhost/private/deploy.php"
-      #- "./deployer.phar:/var/www/vhosts/myvhost/private/deployer.phar"
     links:
       - 'mysql:mysql'

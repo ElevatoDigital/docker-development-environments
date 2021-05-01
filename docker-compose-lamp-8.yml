@@ -17,6 +17,5 @@ services:
       #- "./conf/gelf/gelf.key:/root/.ssh/gelf.key.mounted"
       - "./src:/var/www/vhosts/myvhost"
       #- "./deploy.php:/var/www/vhosts/myvhost/private/deploy.php"
-      #- "./deployer.phar:/var/www/vhosts/myvhost/private/deployer.phar"
     links:
       - 'mysql:mysql'
