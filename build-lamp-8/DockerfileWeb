@@ -35,6 +35,7 @@ RUN apt-get update \
     sudo \
     imagemagick \
     libmagickwand-dev \
+    libmemcached-dev \
     supervisor \
     vim \
     unzip
