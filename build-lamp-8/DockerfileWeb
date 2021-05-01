@@ -41,7 +41,7 @@ RUN apt-get update \
 
 # install nodejs 12
 RUN curl -fsSL https://deb.nodesource.com/setup_12.x | bash - \
-&& apt-get install -y nodejs build-essential
+    && apt-get install -y nodejs build-essential
 
 # install additional php extensions
 RUN docker-php-ext-install \
@@ -62,6 +62,7 @@ RUN chown -R www-data:www-data /var/www/vhosts/myvhost
 
 # install pecl extensions
 RUN pecl install apcu
+RUN pecl install memcached
 
 # php customizations
 VOLUME [/usr/local/etc/php/conf.d/custom.ini]

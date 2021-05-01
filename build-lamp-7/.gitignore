@@ -1,0 +1,23 @@
+# jetbrains ide
+.idea
+
+# exclude any backup files
+*.zip
+*.tar.gz
+
+# exclude local dev environment
+vhost/*
+
+#exclude postgres dumps
+postgres-on-build/*.pgsql.sql
+postgres-on-build/production.sql
+postgres-on-build/import-dump
+
+#exclude mysql dumps
+mysql-on-build/*.mysql.sql
+mysql-on-build/production.sql
+mysql-on-build/backup.sql
+mysql-on-build/import-dump
+
+# exclude nodejs build folders
+node_modules

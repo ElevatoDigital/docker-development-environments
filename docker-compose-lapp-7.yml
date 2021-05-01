@@ -1,0 +1,33 @@
+version: '3.7'
+services:
+  postgres:
+    image: ghcr.io/deltasystems/docker-development-environments/lapp-7-postgres:latest
+    build:
+      context: '.'
+      dockerfile: 'DockerfilePostgres'
+    ports:
+      - "5433:5432"
+    #volumes:
+      #- "./postgres-on-init:/docker-entrypoint-initdb.d"
+  memcached:
+    build:
+      context: '.'
+      dockerfile: 'DockerfileMemcached'
+    ports:
+      - "11211:11211"
+  web:
+    image: ghcr.io/deltasystems/docker-development-environments/lamp-8-web:latest
+    build:
+      context: '.'
+      dockerfile: 'DockerfileWeb'
+    ports:
+      - "8081:80"
+    volumes:
+      #- "./conf/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
+      #- "./conf/supervisor:/etc/supervisor/conf.d"
+      #- "./conf/gelf/gelf.key:/root/.ssh/gelf.key.mounted"
+      - "./src:/var/www/vhosts/myvhost"
+      #- "./deploy.php:/var/www/vhosts/myvhost/private/deploy.php"
+    links:
+      - 'postgres:postgres'
+      - 'memcached:memcached'

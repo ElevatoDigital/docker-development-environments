@@ -12,6 +12,8 @@ To rapidly start local development. Purpose built for Delta's development staff,
 | --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |
 | wordpress | docker-compose-wordpress.yml | Linux | Apache | 12 / 6 |  MySQL 8 | PHP 8 | X | X | X |
 | lamp-8 | docker-compose-lamp-8.yml | Linux | Apache | 12 / 6 | MySQL 5.7 | PHP 8 | X | X | |
+| lamp-7 | docker-compose-lamp-7.yml | Linux | Apache | 12 / 6 | MySQL 5.7 | PHP 7 | X | X | |
+| lapp-7 | docker-compose-lapp-7.yml | Linux | Apache | 12 / 6 | Postgres 9.6 | PHP 7 | X | X | |
 
 ## Prerequisites
 
@@ -36,8 +38,34 @@ Images will be pulled down from this project's container registry and your `src/
 * default mysql port: 3307
 * default mysql user: root
 * default mysql pass: Pass@1234
+* default postgres port: 5433
+* default postgres user: root
+* default postgres pass: Pass@1234
+* default memcached port: 11211
 
-No database is created by default, so you will need to login and create a database for your project (if required).
+## Setting up a database
+
+No database is created by default, so you will need to login and create a database for your project. Or, you may create a `mysql-on-init` or `postgres-on-init` folder and add .sql/.sh files to preload a database when your container is initialized. Each environment has a sample `mysql-on-init` or `postgres-on-init` folder that you may copy into your repository.
+
+mysql-on-init/00000-create-db.sql
+```shell
+/*!40101 SET NAMES utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`development` /*!40100 DEFAULT CHARACTER SET utf8 */;
+```
+postgres-on-init/00000-create-db.sql
+```shell
+#!/bin/bash
+
+DBNAME=development
+DBUSER=development
+DUMPFILE="/docker-entrypoint-initdb.d/import-dump"
+
+echo "Restoring DB using $file"
+psql -U postgres --dbname=postgres -c "CREATE USER $DBUSER;"
+psql -U postgres --dbname=postgres -c "CREATE DATABASE $DBNAME;"
+psql -U postgres --dbname=postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DBNAME TO $DBUSER;"
+psql -U postgres --dbname=$DBNAME < "$DUMPFILE" || exit 1
+```
 
 ## Logging into the web container
 It's recommended that you perform command line operations like `npm install`, `php artisan` and `php composer.phar` from inside the web container. From your repository's root (where docker-compose.yml was installed), execute:
@@ -56,16 +84,20 @@ npm install
 
 Under each environment is a `conf/` directory (i.e. `build-lamp-8/conf/`). You may copy this folder into your repository root directory. Customize the included configs (e.g. php.ini) as needed. Then uncomment the volumes in your local `docker-compose.yml` to mount those configs:
 
+web:
+```yaml
+volumes:
+  - "./conf/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
+```
 mysql:
 ```yaml
 volumes:
   - "./conf/mysql/custom.cnf:/etc/mysql/conf.d/custom.cnf"
 ```
-
-web:
+postgres:
 ```yaml
 volumes:
-  - "./conf/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
+  - "./postgres-on-init:/docker-entrypoint-initdb.d"
 ```
 
 ## Deployer Support
