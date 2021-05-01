@@ -10,13 +10,14 @@ services:
     #volumes:
       #- "./postgres-on-init:/docker-entrypoint-initdb.d"
   memcached:
+    image: ghcr.io/deltasystems/docker-development-environments/lapp-7-memcached:latest
     build:
       context: '.'
       dockerfile: 'DockerfileMemcached'
     ports:
       - "11211:11211"
   web:
-    image: ghcr.io/deltasystems/docker-development-environments/lamp-8-web:latest
+    image: ghcr.io/deltasystems/docker-development-environments/lapp-7-web:latest
     build:
       context: '.'
       dockerfile: 'DockerfileWeb'

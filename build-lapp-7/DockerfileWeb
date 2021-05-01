@@ -19,7 +19,6 @@ VOLUME ['/var/www/vhosts/myvhost']
 VOLUME ['/var/www/vhosts/myvhost/private/deploy.php']
 
 # install additional apache modules
-RUN a2enmod rewrite
 
 # install additional packages
 RUN apt-get update \
@@ -35,6 +34,7 @@ RUN apt-get update \
     sudo \
     imagemagick \
     libmagickwand-dev \
+    libmemcached-dev \
     supervisor \
     vim \
     unzip

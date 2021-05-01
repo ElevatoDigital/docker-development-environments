@@ -9,7 +9,7 @@
 
 # container
 # reference: https://github.com/docker-library/docs/blob/master/php/README.md
-FROM php:7-4-apache
+FROM php:7.4-apache
 
 # app directory on the container
 WORKDIR /var/www/vhosts/myvhost
@@ -35,6 +35,7 @@ RUN apt-get update \
     sudo \
     imagemagick \
     libmagickwand-dev \
+    libmemcached-dev \
     supervisor \
     vim \
     unzip
