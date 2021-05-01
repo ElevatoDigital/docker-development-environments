@@ -39,7 +39,7 @@ Images will be pulled down from this project's container registry and your `src/
 
 No database is created by default, so you will need to login and create a database for your project (if required).
 
-## Logging into thr web container
+## Logging into the web container
 It's recommended that you perform command line operations like `npm install`, `php artisan` and `php composer.phar` from inside the web container. From your repository's root (where docker-compose.yml was installed), execute:
 
 `docker-compose exec web bash`
