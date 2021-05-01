@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   mysql:
-    image: ghcr.io/deltasystems/docker-development-environments/lamp-8-mysql:latest
+    image: ghcr.io/deltasystems/docker-development-environments/wordpress-mysql:latest
     build:
       context: '.'
       dockerfile: 'DockerfileMysql'
@@ -11,7 +11,7 @@ services:
       - "./conf/mysql/custom.cnf:/etc/mysql/conf.d/custom.cnf"
       - "./mysql-on-init:/docker-entrypoint-initdb.d"
   web:
-    image: ghcr.io/deltasystems/docker-development-environments/lamp-8-web:latest
+    image: ghcr.io/deltasystems/docker-development-environments/wordpress-web:latest
     build:
       context: '.'
       dockerfile: 'DockerfileWeb'
