@@ -67,10 +67,21 @@ RUN pecl install apcu
 # php customizations
 VOLUME [/usr/local/etc/php/conf.d/custom.ini]
 
+# composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce9024fc62c56153228907f1545c228516cbf63f885e036d37e9a59d27d63f46af1d4d07ee0f76181c7d3') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+RUN php -r "unlink('composer-setup.php');"
+
+# deployer
+RUN curl -LO https://deployer.org/deployer.phar
+RUN mv deployer.phar /usr/local/bin/dep
+RUN chmod +x /usr/local/bin/dep
+
 # gelf tunnel
-COPY conf/ssh/config /root/.ssh/
+COPY includes/ssh/config /root/.ssh/
 RUN chmod 600 /root/.ssh/config
-COPY conf/gelf/enable_gelf_tunnel.sh /usr/local/sbin/
+COPY includes/gelf/enable_gelf_tunnel.sh /usr/local/sbin/
 
 # gelf key
 VOLUME [/root/.ssh/gelf.key]

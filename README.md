@@ -8,10 +8,10 @@ To rapidly start local development. Purpose built for Delta's development staff,
 
 ## Supported Environments
 
-| Name | docker-compose file | description |
-| --- | --- | --- |
-| wordpress | docker-compose-wordpress.yml | Linux, Apache, MySQL 8, PHP 8 |
-| lamp-8 | docker-compose-lamp-8.yml | Linux, Apache, MySQL 5.7, PHP 8 |
+| Name | docker-compose file | OS | Web Server | NodeJS / NPM | Database | PHP | Composer | Deployer | WP CLi |  
+| --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |
+| wordpress | docker-compose-wordpress.yml | Linux | Apache | 12 / 6 |  MySQL 8 | PHP 8 | X | X | X |
+| lamp-8 | docker-compose-lamp-8.yml | Linux | Apache | 12 / 6 | MySQL 5.7 | PHP 8 | X | X | |
 
 ## Prerequisites
 
@@ -44,15 +44,35 @@ It's recommended that you perform command line operations like `npm install`, `p
 
 `docker-compose exec web bash`
 
+From the container, you can perform normal command line operations such as:
+```shell
+cd private/
+composer install
+php artisan migrate
+npm install
+```
+
 ## Customizing Configs
 
-Under each environment is a `conf/` directory (i.e. `build-lamp-8/conf/`). You may copy this folder into your repository root directory. Customize the included configs (e.g. php.ini) as needed.
+Under each environment is a `conf/` directory (i.e. `build-lamp-8/conf/`). You may copy this folder into your repository root directory. Customize the included configs (e.g. php.ini) as needed. Then uncomment the volumes in your local `docker-compose.yml` to mount those configs:
+
+mysql:
+```yaml
+volumes:
+  - "./conf/mysql/custom.cnf:/etc/mysql/conf.d/custom.cnf"
+```
+
+web:
+```yaml
+volumes:
+  - "./conf/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
+```
 
 ## Deployer Support
 
 If you are using PHP Deployer to handle deployments, two volume mount points exist for `deployer.phar` and `deploy.php`. This allows you to mount these Deployer files from the project root inside the container so that deployment can be made from inside the containers.
 
-Uncomment these two lines in `docker-compose.yml`:
+Uncomment these two lines on the web service in `docker-compose.yml`:
 ```yaml
 - "./deploy.php:/var/www/vhosts/myvhost/private/deploy.php"
 - "./deployer.phar:/var/www/vhosts/myvhost/private/deployer.phar"
