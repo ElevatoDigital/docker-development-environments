@@ -1,0 +1,2 @@
+Host *
+  IdentityFile /root/.ssh/gelf.key

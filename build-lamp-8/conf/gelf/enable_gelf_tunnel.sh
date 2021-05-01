@@ -1,0 +1,1 @@
+ssh -o StrictHostKeyChecking=no -L 127.0.0.1:12201:127.0.0.1:12201 -p61107 gelf@graylog.3pth.com -f -N

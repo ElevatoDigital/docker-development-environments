@@ -1,0 +1,93 @@
+##############################################
+# PHP App Container
+##############################################
+#
+# Creates a PHP container for hosting
+# WordPress and other PHP sites. See
+# docker-compose.yml for usage.
+#
+
+# container
+# reference: https://github.com/docker-library/docs/blob/master/php/README.md
+FROM php:8-apache
+#FROM php:7.4-apache
+#FROM php:5.6-apache
+
+# app directory on the container
+WORKDIR /var/www/vhosts/myvhost
+
+# volume directory for source code
+VOLUME ['/var/www/vhosts/myvhost']
+VOLUME ['/var/www/vhosts/myvhost/private/deploy.php']
+VOLUME ['/var/www/vhosts/myvhost/private/deployer.phar']
+
+# install additional apache modules
+RUN a2enmod rewrite
+
+# install additional packages
+RUN apt-get update \
+&& apt-get upgrade -y \
+&& apt-get install -y \
+    curl \
+    git \
+    libzip-dev \
+    libpq-dev \
+    libxml2-dev \
+    less \
+    net-tools \
+    sudo \
+    imagemagick \
+    libmagickwand-dev \
+    supervisor \
+    vim \
+    unzip
+
+# install nodejs 12
+RUN curl -fsSL https://deb.nodesource.com/setup_12.x | bash - \
+&& apt-get install -y nodejs build-essential
+
+# install additional php extensions
+RUN docker-php-ext-install \
+    bcmath \
+    gd \
+    gettext \
+    mysqli \
+    opcache \
+    pdo \
+    pdo_mysql \
+    pdo_pgsql \
+    soap \
+    sockets \
+    zip
+
+# adjust permissions
+RUN chown -R www-data:www-data /var/www/vhosts/myvhost
+
+#install pecl extensions
+#PHP 5.6 only
+#RUN pecl install apcu-4.0.11 && docker-php-ext-enable apcu
+#PHP 7.x and up
+RUN pecl install apcu
+#RUN pecl install xdebug
+
+#add php customizations
+COPY conf/php/custom.ini $PHP_INI_DIR/conf.d/
+
+#add gelf id_rsa
+COPY conf/ssh/config /root/.ssh/
+RUN chmod 600 /root/.ssh/config
+COPY conf/gelf/gelf.key /root/.ssh/
+RUN chmod 600 /root/.ssh/gelf.key
+COPY conf/gelf/enable_gelf_tunnel.sh /usr/local/sbin/
+
+#supervisor config
+VOLUME ['/etc/supervisor/conf.d']
+
+#configure environment variables
+#reference: https://github.com/docker-library/docs/blob/master/php/README.md#changing-documentroot
+ENV APACHE_DOCUMENT_ROOT /var/www/vhosts/myvhost/httpdocs
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+#run on port 80
+EXPOSE 80
