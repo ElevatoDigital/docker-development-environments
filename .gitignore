@@ -1,0 +1,5 @@
+# jetbrains ide
+.idea
+
+# exclude nodejs build folders
+node_modules
