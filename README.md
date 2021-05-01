@@ -10,7 +10,8 @@ To rapidly start local development. Purpose built for Delta's development staff,
 
 | Name | docker-compose file | description |
 | --- | --- | --- |
-| lamp-8 | docker-compose-lamp-8.yml | Linux, Apache, MySQL, PHP 8 |
+| wordpress | docker-compose-wordpress.yml | Linux, Apache, MySQL 8, PHP 8 |
+| lamp-8 | docker-compose-lamp-8.yml | Linux, Apache, MySQL 5.7, PHP 8 |
 
 ## Prerequisites
 
