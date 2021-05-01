@@ -1,0 +1,26 @@
+##############################################
+# MySQL DB Container
+##############################################
+#
+# Creates a MySQL container for hosting
+# app databases. See docker-compose.yml
+# for usage.
+#
+
+#reference: https://store.docker.com/images/mysql
+FROM mysql:8
+
+#app directory on the container
+WORKDIR /var/data/mysql
+
+#environment variables
+ENV MYSQL_ROOT_PASSWORD Pass@1234
+
+#custom config
+VOLUME ['/etc/mysql/conf.d/custom.cnf']
+
+#create volume entry point
+VOLUME ['/docker-entrypoint-initdb.d']
+
+#expose the database
+EXPOSE 3306

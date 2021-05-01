@@ -67,17 +67,6 @@ RUN pecl install apcu
 # php customizations
 VOLUME [/usr/local/etc/php/conf.d/custom.ini]
 
-# gelf tunnel
-COPY conf/ssh/config /root/.ssh/
-RUN chmod 600 /root/.ssh/config
-COPY conf/gelf/enable_gelf_tunnel.sh /usr/local/sbin/
-
-# gelf key
-VOLUME [/root/.ssh/gelf.key]
-
-# supervisor config
-VOLUME ['/etc/supervisor/conf.d']
-
 # configure environment variables
 # reference: https://github.com/docker-library/docs/blob/master/php/README.md#changing-documentroot
 ENV APACHE_DOCUMENT_ROOT /var/www/vhosts/myvhost/httpdocs
