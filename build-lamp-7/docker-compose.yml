@@ -9,7 +9,7 @@ services:
       - "3307:3306"
     volumes:
       - "./conf/mysql/custom.cnf:/etc/mysql/conf.d/custom.cnf"
-      - "./mysql-on-init:/docker-entrypoint-initdb.d"
+      #- "./mysql-on-init:/docker-entrypoint-initdb.d"
   web:
     image: ghcr.io/deltasystems/docker-development-environments/lamp-7-web:latest
     build:

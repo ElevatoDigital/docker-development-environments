@@ -7,20 +7,23 @@
 # for usage.
 #
 
-#reference: https://store.docker.com/images/postgres
+# reference: https://store.docker.com/images/postgres
 FROM postgres:9.6
 
-#app directory on the container
+# app directory on the container
 #WORKDIR /var/lib/postgresql/data
 
-#environment variables
+# environment variables
 ENV POSTGRES_PASSWORD Pass@1234
 
-#custom config
-#VOLUME ['/etc/postgresql/postgresql.conf']
+# custom config
+VOLUME ['/etc/postgresql/postgresql.conf']
 
-#create volume entry point
+# default database
+COPY postgres-on-init/00000-create-db.sh /docker-entrypoint-initdb.d/
+
+# create volume entry point
 VOLUME ['/docker-entrypoint-initdb.d']
 
-#expose the database
+# expose the database
 EXPOSE 5432

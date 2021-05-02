@@ -34,25 +34,41 @@ src/
 
 Images will be pulled down from this project's container registry and your `src/` folder mounted to the web container. Default access settings:
 
-* default web url: http://localhost:8081
-* default mysql port: 3307
-* default mysql user: root
-* default mysql pass: Pass@1234
-* default postgres port: 5433
-* default postgres user: root
-* default postgres pass: Pass@1234
-* default memcached port: 11211
+default web settings:
+* url: http://localhost:8081
+  
+default mysql settings:
+* local port: 3307 (3306 from container)
+* host: mysql
+* user: root
+* pass: Pass@1234
+* name: development
+
+default postgres settings:
+* local port: 5433 (5432 from container)
+* host: postgres
+* user: root
+* pass: Pass@1234
+* name: development
+
+default memcached settings:
+* port: 11211
 
 ## Setting up a database
 
-No database is created by default, so you will need to login and create a database for your project. Or, you may create a `mysql-on-init` or `postgres-on-init` folder and add .sql/.sh files to preload a database when your container is initialized. Each environment has a sample `mysql-on-init` or `postgres-on-init` folder that you may copy into your repository.
+To override the default `development` database, you may create a `mysql-on-init` or `postgres-on-init` folder and add .sql/.sh files to preload a database when your container is initialized. Each environment has a sample `mysql-on-init` or `postgres-on-init` folder that you may copy into your repository to get started. Finally, you need to uncomment the volume in your `docker-compose.yml` to use that folder.
 
-mysql-on-init/00000-create-db.sql
+copy mysql-on-init/00000-create-db.sql to repository
 ```shell
 /*!40101 SET NAMES utf8 */;
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`development` /*!40100 DEFAULT CHARACTER SET utf8 */;
 ```
-postgres-on-init/00000-create-db.sql
+then uncomment in `docker-compose.yml`
+```shell
+- "./mysql-on-init:/docker-entrypoint-initdb.d"
+```
+
+copy postgres-on-init/00000-create-db.sql to repository
 ```shell
 #!/bin/bash
 
@@ -65,6 +81,10 @@ psql -U postgres --dbname=postgres -c "CREATE USER $DBUSER;"
 psql -U postgres --dbname=postgres -c "CREATE DATABASE $DBNAME;"
 psql -U postgres --dbname=postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DBNAME TO $DBUSER;"
 psql -U postgres --dbname=$DBNAME < "$DUMPFILE" || exit 1
+```
+then uncomment in `docker-compose.yml`
+```shell
+- "./postgres-on-init:/docker-entrypoint-initdb.d"
 ```
 
 ## Logging into the web container

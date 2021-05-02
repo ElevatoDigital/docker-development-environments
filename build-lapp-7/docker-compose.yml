@@ -9,7 +9,7 @@ services:
       - "5433:5432"
     volumes:
       - "./conf/postgres/custom.cnf:/etc/postgresql/postgresql.conf"
-      - "./postgres-on-init:/docker-entrypoint-initdb.d"
+      #- "./postgres-on-init:/docker-entrypoint-initdb.d"
   memcached:
     image: ghcr.io/deltasystems/docker-development-environments/lapp-7-memcached:latest
     build:
