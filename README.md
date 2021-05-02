@@ -34,6 +34,8 @@ src/
 
 Images will be pulled down from this project's container registry and your `src/` folder mounted to the web container. Default access settings:
 
+## Default connection settings
+
 default web settings:
 * url: http://localhost:8081
   
@@ -54,7 +56,20 @@ default postgres settings:
 default memcached settings:
 * port: 11211
 
-## Setting up a database
+## Logging into the web container
+It's recommended that you perform command line operations like `npm install`, `php artisan` and `php composer.phar` from inside the web container. From your repository's root (where docker-compose.yml was installed), execute:
+
+`docker-compose exec web bash`
+
+From the container, you can perform normal command line operations such as:
+```shell
+cd private/
+composer install
+php artisan migrate
+npm install
+```
+
+## Customizing database
 
 To override the default `development` database, you may create a `mysql-on-init` or `postgres-on-init` folder and add .sql/.sh files to preload a database when your container is initialized. Each environment has a sample `mysql-on-init` or `postgres-on-init` folder that you may copy into your repository to get started. Finally, you need to uncomment the volume in your `docker-compose.yml` to use that folder.
 
@@ -85,19 +100,6 @@ psql -U postgres --dbname=$DBNAME < "$DUMPFILE" || exit 1
 then uncomment in `docker-compose.yml`
 ```shell
 - "./postgres-on-init:/docker-entrypoint-initdb.d"
-```
-
-## Logging into the web container
-It's recommended that you perform command line operations like `npm install`, `php artisan` and `php composer.phar` from inside the web container. From your repository's root (where docker-compose.yml was installed), execute:
-
-`docker-compose exec web bash`
-
-From the container, you can perform normal command line operations such as:
-```shell
-cd private/
-composer install
-php artisan migrate
-npm install
 ```
 
 ## Customizing Configs
