@@ -15,8 +15,8 @@ FROM php:8-apache
 WORKDIR /var/www/vhosts/myvhost
 
 # volume directory for source code
-VOLUME ['/var/www/vhosts/myvhost']
-VOLUME ['/var/www/vhosts/myvhost/private/deploy.php']
+VOLUME ["/var/www/vhosts/myvhost"]
+VOLUME ["/var/www/vhosts/myvhost/private/deploy.php"]
 
 # install additional apache modules
 RUN a2enmod rewrite
@@ -64,7 +64,7 @@ RUN chown -R www-data:www-data /var/www/vhosts/myvhost
 RUN pecl install apcu
 
 # php customizations
-VOLUME [/usr/local/etc/php/conf.d/custom.ini]
+VOLUME ["/usr/local/etc/php/conf.d/custom.ini"]
 
 # composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
