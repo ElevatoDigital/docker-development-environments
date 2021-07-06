@@ -15,8 +15,8 @@ FROM php:7.4-apache
 WORKDIR /var/www/vhosts/myvhost
 
 # volume directory for source code
-VOLUME ['/var/www/vhosts/myvhost']
-VOLUME ['/var/www/vhosts/myvhost/private/deploy.php']
+VOLUME ["/var/www/vhosts/myvhost"]
+VOLUME ["/var/www/vhosts/myvhost/private/deploy.php"]
 
 # install additional apache modules
 RUN a2enmod rewrite
@@ -66,7 +66,7 @@ RUN pecl install apcu
 RUN pecl install memcached
 
 # php customizations
-VOLUME [/usr/local/etc/php/conf.d/custom.ini]
+VOLUME ["/usr/local/etc/php/conf.d/custom.ini"]
 
 # composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
@@ -85,10 +85,10 @@ RUN chmod 600 /root/.ssh/config
 COPY includes/gelf/enable_gelf_tunnel.sh /usr/local/sbin/
 
 # gelf key
-VOLUME [/root/.ssh/gelf.key]
+VOLUME ["/root/.ssh/gelf.key"]
 
 # supervisor config
-VOLUME ['/etc/supervisor/conf.d']
+VOLUME ["/etc/supervisor/conf.d"]
 
 # configure environment variables
 # reference: https://github.com/docker-library/docs/blob/master/php/README.md#changing-documentroot
