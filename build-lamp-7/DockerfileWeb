@@ -38,7 +38,8 @@ RUN apt-get update \
     libmemcached-dev \
     supervisor \
     vim \
-    unzip
+    unzip \
+    wkhtmltopdf
 
 # install nodejs 12
 RUN curl -fsSL https://deb.nodesource.com/setup_12.x | bash - \
