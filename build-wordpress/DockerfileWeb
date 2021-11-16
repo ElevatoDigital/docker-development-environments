@@ -47,6 +47,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_12.x | bash - \
 # install additional php extensions
 RUN docker-php-ext-install \
     bcmath \
+    calendar \
     gd \
     gettext \
     mysqli \
