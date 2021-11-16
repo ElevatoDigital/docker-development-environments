@@ -144,3 +144,37 @@ Run deployer commands:
 cd private/
 dep deploy staging
 ```
+
+## Publishing Image Changes
+
+If you have made changes to the Docker configuration, those changes should be reflected in the associated packages by
+publishing rebuilt images to the GitHub Container Registry. First, rebuild the containers and then push.
+
+```shell
+docker login ghcr.io # Use development+deploy@deltasys.com account in LastPass
+
+cd build-lamp-7
+docker compose build
+docker push ghcr.io/deltasystems/docker-development-environments/lamp-7-mysql
+docker push ghcr.io/deltasystems/docker-development-environments/lamp-7-web
+cd ..
+
+cd build-lamp-8
+docker compose build
+docker push ghcr.io/deltasystems/docker-development-environments/lamp-8-mysql
+docker push ghcr.io/deltasystems/docker-development-environments/lamp-8-web
+cd ..
+
+cd build-lapp-7
+docker compose build
+docker push ghcr.io/deltasystems/docker-development-environments/lapp-7-memcached
+docker push ghcr.io/deltasystems/docker-development-environments/lapp-7-postgres
+docker push ghcr.io/deltasystems/docker-development-environments/lapp-7-web
+cd ..
+
+cd build-wordpress
+docker compose build
+docker push ghcr.io/deltasystems/docker-development-environments/wordpress-mysql
+docker push ghcr.io/deltasystems/docker-development-environments/wordpress-web
+cd ..
+```
