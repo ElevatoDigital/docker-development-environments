@@ -71,13 +71,13 @@ RUN pecl install memcached
 VOLUME ["/usr/local/etc/php/conf.d/custom.ini"]
 
 # composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-RUN php -r "unlink('composer-setup.php');"
+RUN php -r "copy('https://getcomposer.org/installer', '/root/composer-setup.php');"
+RUN php /root/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+RUN php -r "unlink('/root/composer-setup.php');"
 
 # deployer
-RUN curl -LO https://deployer.org/deployer.phar
-RUN mv deployer.phar /usr/local/bin/dep
+RUN curl -LO --output-dir /root https://deployer.org/deployer.phar
+RUN mv /root/deployer.phar /usr/local/bin/dep
 RUN chmod +x /usr/local/bin/dep
 
 # gelf tunnel
