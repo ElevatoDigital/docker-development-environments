@@ -25,7 +25,7 @@ services:
     ports:
       - "8081:80"
     volumes:
-      - "./conf/php/custom.ini:/usr/local/etc/php/conf.d/custom-env.ini"
+      - "./conf/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
       - "./conf/supervisor:/etc/supervisor/conf.d"
       - "./conf/gelf/gelf.key:/root/.ssh/gelf.key.mounted"
       #- "./src:/var/www/vhosts/myvhost"
