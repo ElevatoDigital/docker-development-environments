@@ -145,36 +145,73 @@ cd private/
 dep deploy staging
 ```
 
-## Publishing Image Changes
+## Publishing Image Changes (Development Team Only)
 
 If you have made changes to the Docker configuration, those changes should be reflected in the associated packages by
 publishing rebuilt images to the GitHub Container Registry. First, rebuild the containers and then push.
 
+### Logging into ghcr.io with Docker (password)
+
+This method has been deprecated by GitHub and may give you issues in the future. 
+
 ```shell
 docker login ghcr.io # Use development+deploy@deltasys.com account in LastPass
+```
 
+### Logging into ghcr.io with Docker (personal access token)
+
+This is the preferred method for authenticating with GitHub's container repository.
+
+Note: please refer to this documentation which these steps are derived from https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry
+
+1. Login with your GitHub account (or an account with write access to the `deltasystems/docker-development-environments` repository)
+2. Settings > Developer Settings > Personal Access Tokens
+3. Generate New Token
+4. Select an appropriate Expiration setting
+5. Name the token and select the `write:packages` and `delete:packages` scopes.
+6. Record the generated token for the next steps (YOUR_TOKEN)
+7. Login to docker from the CLI
+
+*nix systems
+```shell
+# save token to environmental variable
+export CR_PAT=YOUR_TOKEN
+
+# login using the token stored in your environmental variable
+echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
+```
+
+windows system
+```shell
+# save token to a text file
+"YOUR_TOKEN" | Out-File -FilePath ~\.docker-development-environments-pat
+
+# read pat from text file and supply to docker login
+cat ~\.docker-development-environments-pat | docker login ghcr.io -u USERNAME --password-stdin
+```
+
+### Build & Push
+
+Each Docker environment with changes needs to be  built and pushed. This is accomplished by changing directories to each environment and running the `docker build` and `docker push` commands (formerly `docker-compose build` and `docker-compose push`).
+
+```shell
 cd build-lamp-7
 docker compose build
-docker push ghcr.io/deltasystems/docker-development-environments/lamp-7-mysql
-docker push ghcr.io/deltasystems/docker-development-environments/lamp-7-web
+docker compose push
 cd ..
 
 cd build-lamp-8
 docker compose build
-docker push ghcr.io/deltasystems/docker-development-environments/lamp-8-mysql
-docker push ghcr.io/deltasystems/docker-development-environments/lamp-8-web
+docker compose push
 cd ..
 
 cd build-lapp-7
 docker compose build
-docker push ghcr.io/deltasystems/docker-development-environments/lapp-7-memcached
-docker push ghcr.io/deltasystems/docker-development-environments/lapp-7-postgres
-docker push ghcr.io/deltasystems/docker-development-environments/lapp-7-web
+docker compose push
 cd ..
 
 cd build-wordpress
 docker compose build
-docker push ghcr.io/deltasystems/docker-development-environments/wordpress-mysql
-docker push ghcr.io/deltasystems/docker-development-environments/wordpress-web
+docker compose push
 cd ..
 ```
