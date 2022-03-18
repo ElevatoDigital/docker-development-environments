@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+# start supervisord
+/usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+        set -- apache2-foreground "$@"
+fi
+
+exec "$@"

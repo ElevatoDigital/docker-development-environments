@@ -8,18 +8,14 @@
 #
 
 # container
-    # reference: https://github.com/docker-library/docs/blob/master/php/README.md
-FROM php:8-apache
+# reference: https://github.com/docker-library/docs/blob/master/php/README.md
+FROM php:8-cli
 
 # app directory on the container
-WORKDIR /var/www/vhosts/myvhost
+WORKDIR /var/myapp
 
 # volume directory for source code
-VOLUME ["/var/www/vhosts/myvhost"]
-VOLUME ["/var/www/vhosts/myvhost/private/deploy.php"]
-
-# install additional apache modules
-RUN a2enmod rewrite
+VOLUME ["/var/myapp"]
 
 # install additional packages
 RUN apt-get update \
@@ -64,7 +60,7 @@ RUN docker-php-ext-install \
     zip
 
 # adjust permissions
-RUN chown -R www-data:www-data /var/www/vhosts/myvhost
+#RUN chown -R www-data:www-data /var/www/vhosts/myvhost
 
 # install pecl extensions
 RUN pecl install apcu
@@ -83,29 +79,5 @@ RUN curl -LO --output-dir /root https://deployer.org/deployer.phar
 RUN mv /root/deployer.phar /usr/local/bin/dep
 RUN chmod +x /usr/local/bin/dep
 
-# gelf tunnel
-COPY includes/ssh/config /root/.ssh/
-RUN chmod 600 /root/.ssh/config
-COPY includes/gelf/enable_gelf_tunnel.sh /usr/local/sbin/
-
-# gelf key
-VOLUME ["/root/.ssh/gelf.key"]
-
-# supervisor config
-VOLUME ["/etc/supervisor/conf.d"]
-RUN ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
-
-# configure environment variables
-# reference: https://github.com/docker-library/docs/blob/master/php/README.md#changing-documentroot
-ENV APACHE_DOCUMENT_ROOT /var/www/vhosts/myvhost/httpdocs
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-
-# run on port 80
-EXPOSE 80
-
-# entrypoint
-COPY docker-php-entrypoint-custom /usr/local/bin/docker-php-entrypoint-custom
-RUN chmod +x /usr/local/bin/docker-php-entrypoint-custom
-ENTRYPOINT ["docker-php-entrypoint-custom"]
-CMD ["apache2-foreground"]
+# cmd
+CMD ["dep", "deploy", "staging"]

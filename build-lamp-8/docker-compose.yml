@@ -10,19 +10,11 @@ services:
     volumes:
       - "./conf/mysql/custom.cnf:/etc/mysql/conf.d/custom.cnf"
       #- "./mysql-on-init:/docker-entrypoint-initdb.d"
-  web:
-    image: ghcr.io/deltasystems/docker-development-environments/lamp-8-web:latest
+  deployer:
+    image: ghcr.io/deltasystems/docker-development-environments/lamp-8-deployer:latest
     build:
       context: '.'
-      dockerfile: 'DockerfileWeb'
-    ports:
-      - "8081:80"
+      dockerfile: 'DockerfileDeployer'
     volumes:
       - "./conf/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
-      - "./conf/supervisor:/etc/supervisor/conf.d"
-      - "./conf/gelf/gelf.key:/root/.ssh/gelf.key.mounted"
-      #- "./src:/var/www/vhosts/myvhost"
-      #- "./deploy.php:/var/www/vhosts/myvhost/private/deploy.php"
-      #- "./deployer.phar:/var/www/vhosts/myvhost/private/deployer.phar"
-    links:
-      - 'mysql:mysql'
+      - ".:/var/myapp"
