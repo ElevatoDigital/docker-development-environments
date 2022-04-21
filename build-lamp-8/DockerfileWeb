@@ -36,14 +36,28 @@ RUN apt-get update \
     imagemagick \
     libmagickwand-dev \
     libmemcached-dev \
+    python \
+    python-dev \
+    virtualenv \
     supervisor \
     vim \
     unzip \
+    wget \
     wkhtmltopdf
+
+# install python2 pip
+RUN wget https://bootstrap.pypa.io/pip/2.7/get-pip.py \
+&& python get-pip.py
+
+# install pip packages
+RUN python -m pip install future
 
 # install nodejs 12
 RUN curl -fsSL https://deb.nodesource.com/setup_12.x | bash - \
     && apt-get install -y nodejs build-essential
+
+# symlink wkhtmltopdf to match production
+RUN ln -s /usr/bin/wkhtmltopdf /usr/local/bin/wkhtmltopdf
 
 # install additional php extensions
 RUN docker-php-ext-install \
@@ -71,13 +85,13 @@ RUN pecl install memcached
 VOLUME ["/usr/local/etc/php/conf.d/custom.ini"]
 
 # composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-RUN php -r "unlink('composer-setup.php');"
+RUN php -r "copy('https://getcomposer.org/installer', '/root/composer-setup.php');"
+RUN php /root/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+RUN php -r "unlink('/root/composer-setup.php');"
 
 # deployer
-RUN curl -LO https://deployer.org/deployer.phar
-RUN mv deployer.phar /usr/local/bin/dep
+RUN curl -LO --output-dir /root https://deployer.org/deployer.phar
+RUN mv /root/deployer.phar /usr/local/bin/dep
 RUN chmod +x /usr/local/bin/dep
 
 # gelf tunnel
