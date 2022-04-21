@@ -1,0 +1,104 @@
+##############################################
+# PHP App Container
+##############################################
+#
+# Creates a PHP container for hosting
+# WordPress and other PHP sites. See
+# docker-compose.yml for usage.
+#
+
+# container
+# reference: https://github.com/docker-library/docs/blob/master/php/README.md
+FROM php:8-apache
+
+# app directory on the container
+WORKDIR /var/www/vhosts/myvhost
+
+# volume directory for source code
+VOLUME ["/var/www/vhosts/myvhost"]
+VOLUME ["/var/www/vhosts/myvhost/private/deploy.php"]
+
+# install additional apache modules
+RUN a2enmod rewrite
+
+# install additional packages
+RUN apt-get update \
+&& apt-get upgrade -y \
+&& apt-get install -y \
+    curl \
+    git \
+    libzip-dev \
+    libpq-dev \
+    libxml2-dev \
+    less \
+    net-tools \
+    sudo \
+    imagemagick \
+    libmagickwand-dev \
+    libmemcached-dev \
+    supervisor \
+    vim \
+    unzip \
+    wkhtmltopdf
+
+# install nodejs 12
+RUN curl -fsSL https://deb.nodesource.com/setup_12.x | bash - \
+    && apt-get install -y nodejs build-essential
+
+# symlink wkhtmltopdf to match production
+RUN ln -s /usr/bin/wkhtmltopdf /usr/local/bin/wkhtmltopdf
+
+# install additional php extensions
+RUN docker-php-ext-install \
+    bcmath \
+    calendar \
+    gd \
+    gettext \
+    mysqli \
+    opcache \
+    pdo \
+    pdo_mysql \
+    pdo_pgsql \
+    soap \
+    sockets \
+    zip
+
+# adjust permissions
+RUN chown -R www-data:www-data /var/www/vhosts/myvhost
+
+# install pecl extensions
+RUN pecl install apcu
+RUN pecl install memcached
+
+# php customizations
+VOLUME ["/usr/local/etc/php/conf.d/custom.ini"]
+
+# composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+RUN php -r "unlink('composer-setup.php');"
+
+# deployer
+RUN curl -LO https://deployer.org/deployer.phar
+RUN mv deployer.phar /usr/local/bin/dep
+RUN chmod +x /usr/local/bin/dep
+
+# gelf tunnel
+COPY includes/ssh/config /root/.ssh/
+RUN chmod 600 /root/.ssh/config
+COPY includes/gelf/enable_gelf_tunnel.sh /usr/local/sbin/
+
+# gelf key
+VOLUME ["/root/.ssh/gelf.key"]
+
+# supervisor config
+VOLUME ["/etc/supervisor/conf.d"]
+
+# configure environment variables
+# reference: https://github.com/docker-library/docs/blob/master/php/README.md#changing-documentroot
+ENV APACHE_DOCUMENT_ROOT /var/www/vhosts/myvhost/httpdocs
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+# run on port 80
+EXPOSE 80

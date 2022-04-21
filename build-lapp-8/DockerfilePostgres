@@ -1,0 +1,29 @@
+##############################################
+# Postgres DB Container
+##############################################
+#
+# Creates a Postgres container for hosting
+# app databases. See docker-compose.yml
+# for usage.
+#
+
+# reference: https://store.docker.com/images/postgres
+FROM postgres:11
+
+# app directory on the container
+#WORKDIR /var/lib/postgresql/data
+
+# environment variables
+ENV POSTGRES_PASSWORD Pass@1234
+
+# custom config
+#VOLUME ["/etc/postgresql/postgresql.conf"]
+
+# create volume entry point
+VOLUME ["/docker-entrypoint-initdb.d"]
+
+# default database
+COPY postgres-on-init/00000-create-db.sh /docker-entrypoint-initdb.d/
+
+# expose the database
+EXPOSE 5432
