@@ -26,6 +26,7 @@ RUN apt-get update \
 && apt-get upgrade -y \
 && apt-get install -y \
     curl \
+    cron \
     git \
     libzip-dev \
     libpq-dev \
@@ -104,6 +105,12 @@ VOLUME ["/root/.ssh/gelf.key"]
 
 # supervisor config
 VOLUME ["/etc/supervisor/conf.d"]
+
+# crontab config
+VOLUME ["/etc/cron.d/crontab"]
+
+# add cron support to cmd script
+RUN sed -i 's/^exec /crontab \/etc\/cron.d\/crontab\nservice cron start\n\nexec /' /usr/local/bin/apache2-foreground
 
 # configure environment variables
 # reference: https://github.com/docker-library/docs/blob/master/php/README.md#changing-documentroot

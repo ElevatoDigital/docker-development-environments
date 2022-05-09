@@ -1,0 +1,4 @@
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+* * * * *  echo "`date`: cron hello world!" > /proc/1/fd/1 2>/proc/1/fd/2
+#* * * * * cd /var/www/vhosts/myvhost/private && /usr/local/bin/php artisan schedule:run > /proc/1/fd/1 2>/proc/1/fd/2

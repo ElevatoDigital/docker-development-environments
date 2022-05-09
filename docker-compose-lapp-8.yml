@@ -17,8 +17,9 @@ services:
     volumes:
       #- "./conf/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
       #- "./conf/supervisor:/etc/supervisor/conf.d"
-      #- "./conf/gelf/gelf.key:/root/.ssh/gelf.key.mounted"
+      - "./conf/cron/crontab.txt:/etc/cron.d/crontab"
       - "./src:/var/www/vhosts/myvhost"
+      #- "./conf/gelf/gelf.key:/root/.ssh/gelf.key.mounted"
       #- "./deploy.php:/var/www/vhosts/myvhost/private/deploy.php"
     links:
       - 'postgres:postgres'

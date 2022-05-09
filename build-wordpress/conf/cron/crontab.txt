@@ -1,0 +1,3 @@
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+* * * * * cd /var/www/vhosts/myvhost/httpdocs && /usr/local/bin/wp cron event run --due-now > /proc/1/fd/1 2>/proc/1/fd/2

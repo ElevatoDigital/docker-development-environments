@@ -26,6 +26,7 @@ RUN apt-get update \
 && apt-get upgrade -y \
 && apt-get install -y \
     curl \
+    cron \
     git \
     libzip-dev \
     libpq-dev \
@@ -85,6 +86,12 @@ RUN chmod +x /usr/local/bin/dep
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 RUN chmod +x wp-cli.phar
 RUN mv wp-cli.phar /usr/local/bin/wp
+
+# crontab config
+VOLUME ["/etc/cron.d/crontab"]
+
+# add cron support to cmd script
+RUN sed -i 's/^exec /crontab \/etc\/cron.d\/crontab\nservice cron start\n\nexec /' /usr/local/bin/apache2-foreground
 
 # configure environment variables
 # reference: https://github.com/docker-library/docs/blob/master/php/README.md#changing-documentroot

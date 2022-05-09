@@ -20,6 +20,7 @@ services:
     volumes:
       - "./conf/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
       - "./conf/supervisor:/etc/supervisor/conf.d"
+      - "./conf/cron/crontab.txt:/etc/cron.d/crontab"
       - "./conf/gelf/gelf.key:/root/.ssh/gelf.key.mounted"
       #- "./src:/var/www/vhosts/myvhost"
       #- "./deploy.php:/var/www/vhosts/myvhost/private/deploy.php"
