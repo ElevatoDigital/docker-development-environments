@@ -1,19 +1,20 @@
 # Docker Development Environments
-To rapidly start local development. Purpose built for Delta's development staff, but open for public use.
+Rapidly start your local development using purpose built Docker containers for our development projects.
 
 ## Goals
-* Add a complete docker environment to a repo with minimal effort
+* Add a complete docker environment to your repo with minimal effort
 * Support a standard project layout, compatible with [TriPoint Hosting](https://www.tripointhosting.com)
 * Provide multiple configurations for different project requirements
 
 ## Supported Environments
 
-| Name | docker-compose file | OS | Web Server | NodeJS / NPM | Database | PHP | Composer | Deployer | WP CLi |  
-| --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |
-| wordpress | docker-compose-wordpress.yml | Linux | Apache | 12 / 6 |  MySQL 8 | PHP 8 | X | X | X |
-| lamp-8 | docker-compose-lamp-8.yml | Linux | Apache | 12 / 6 | MySQL 5.7 | PHP 8 | X | X | |
-| lamp-7 | docker-compose-lamp-7.yml | Linux | Apache | 12 / 6 | MySQL 5.7 | PHP 7 | X | X | |
-| lapp-7 | docker-compose-lapp-7.yml | Linux | Apache | 12 / 6 | Postgres 9.6 | PHP 7 | X | X | |
+| Name      | docker-compose file          | OS | Web Server | NodeJS / NPM | Database    | PHP   | Composer | Cron | WP CLi |  
+|-----------|------------------------------| --- |--- |--- |-------------|-------|--- |------|--- |
+| wordpress | docker-compose-wordpress.yml | Linux | Apache | 12 / 6 | MySQL 8     | PHP 8 | X | X    | X |
+| lamp-8    | docker-compose-lamp-8.yml    | Linux | Apache | 12 / 6 | MySQL 5.7   | PHP 8 | X | X    | |
+| lamp-7    | docker-compose-lamp-7.yml    | Linux | Apache | 12 / 6 | MySQL 5.7   | PHP 7 | X | X    | |
+| lapp-8    | docker-compose-lapp-8.yml    | Linux | Apache | 12 / 6 | Postgres 11 | PHP 8 | X | X    | |
+| lapp-7    | docker-compose-lapp-7.yml    | Linux | Apache | 12 / 6 | Postgres 9.6 | PHP 7 | X | X    | |
 
 ## Prerequisites
 
@@ -57,7 +58,7 @@ default memcached settings:
 * port: 11211
 
 ## Logging into the web container
-It's recommended that you perform command line operations like `npm install`, `php artisan` and `php composer.phar` from inside the web container. From your repository's root (where docker-compose.yml was installed), execute:
+It's recommended that you perform command line operations like `composer`, `php artisan`, and `npm install` from inside the web container. From your repository's root (where docker-compose.yml was installed), execute:
 
 `docker-compose exec web bash`
 
@@ -67,6 +68,28 @@ cd private/
 composer install
 php artisan migrate
 npm install
+```
+
+## Updating existing containers
+
+From time to time you may need to rebuild your Docker containers to pull an updated version of these images for your project. Typically, the web container sees the most updates and can be rebuilt painlessly.
+
+Rebuild the web container:
+```shell
+docker-compose stop web
+docker-compose rm web
+docker-compose pull
+docker-compose up -d web
+```
+
+If an updated database image is available (less common), you may want to backup your existing database before rebuilding your database container. Rebuilding the database container will delete your existing database permanently.
+
+Rebuild the db container (this will delete your db data):
+```shell
+docker-compose stop db
+docker-compose rm db
+docker-compose pull
+docker-compose up -d db
 ```
 
 ## Customizing database
@@ -126,7 +149,7 @@ volumes:
 
 If you are using PHP Deployer to handle deployments, a volume mount point exists for `deploy.php`. This allows you to mount the Deployer config from the project root inside the container so that deployments can be made from inside the container.
 
-Uncomment thi line on the web service in `docker-compose.yml`:
+Uncomment this line on the web service in `docker-compose.yml`:
 ```yaml
 - "./deploy.php:/var/www/vhosts/myvhost/private/deploy.php"
 ```
@@ -149,6 +172,7 @@ dep deploy staging
 
 If you have made changes to the Docker configuration, those changes should be reflected in the associated packages by
 publishing rebuilt images to the GitHub Container Registry. First, rebuild the containers and then push.
+
 
 ### Logging into ghcr.io with Docker (password)
 
@@ -206,6 +230,11 @@ docker compose push
 cd ..
 
 cd build-lapp-7
+docker compose build
+docker compose push
+cd ..
+
+cd build-lapp-8
 docker compose build
 docker compose push
 cd ..
