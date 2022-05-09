@@ -13,6 +13,7 @@ services:
       - "8081:80"
     volumes:
       #- "./conf/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
+      - "./conf/cron/crontab.txt:/etc/cron.d/crontab"
       - "./src:/var/www/vhosts/myvhost"
       #- "./deploy.php:/var/www/vhosts/myvhost/private/deploy.php"
     links:
