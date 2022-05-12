@@ -86,10 +86,10 @@ If an updated database image is available (less common), you may want to backup 
 
 Rebuild the db container (this will delete your db data):
 ```shell
-docker-compose stop db
-docker-compose rm db
+docker-compose stop mysql
+docker-compose rm mysql
 docker-compose pull
-docker-compose up -d db
+docker-compose up -d mysql
 ```
 
 ## Customizing database
