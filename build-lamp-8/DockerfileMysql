@@ -8,7 +8,7 @@
 #
 
 # reference: https://store.docker.com/images/mysql
-FROM mysql:5.7
+FROM mysql:8
 
 # app directory on the container
 WORKDIR /var/data/mysql

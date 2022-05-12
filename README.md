@@ -8,12 +8,12 @@ Rapidly start your local development using purpose built Docker containers for o
 
 ## Supported Environments
 
-| Name      | docker-compose file          | OS | Web Server | NodeJS / NPM | Database    | PHP   | Composer | Cron | WP CLi |  
-|-----------|------------------------------| --- |--- |--- |-------------|-------|--- |------|--- |
-| wordpress | docker-compose-wordpress.yml | Linux | Apache | 12 / 6 | MySQL 8     | PHP 8 | X | X    | X |
-| lamp-8    | docker-compose-lamp-8.yml    | Linux | Apache | 12 / 6 | MySQL 5.7   | PHP 8 | X | X    | |
-| lamp-7    | docker-compose-lamp-7.yml    | Linux | Apache | 12 / 6 | MySQL 5.7   | PHP 7 | X | X    | |
-| lapp-8    | docker-compose-lapp-8.yml    | Linux | Apache | 12 / 6 | Postgres 11 | PHP 8 | X | X    | |
+| Name      | docker-compose file          | OS | Web Server | NodeJS / NPM | Database     | PHP   | Composer | Cron | WP CLi |  
+|-----------|------------------------------| --- |--- |--- |--------------|-------|--- |------|--- |
+| wordpress | docker-compose-wordpress.yml | Linux | Apache | 12 / 6 | MySQL 8      | PHP 8 | X | X    | X |
+| lamp-8    | docker-compose-lamp-8.yml    | Linux | Apache | 12 / 6 | MySQL 8      | PHP 8 | X | X    | |
+| lamp-7    | docker-compose-lamp-7.yml    | Linux | Apache | 12 / 6 | MySQL 5.7    | PHP 7 | X | X    | |
+| lapp-8    | docker-compose-lapp-8.yml    | Linux | Apache | 12 / 6 | Postgres 11  | PHP 8 | X | X    | |
 | lapp-7    | docker-compose-lapp-7.yml    | Linux | Apache | 12 / 6 | Postgres 9.6 | PHP 7 | X | X    | |
 
 ## Prerequisites
