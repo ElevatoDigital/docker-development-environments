@@ -9,12 +9,14 @@ Rapidly start your local development using purpose built Docker containers for o
 ## Supported Environments
 
 | Name      | docker-compose file          | OS | Web Server | NodeJS / NPM | Database     | PHP   | Composer | Cron | WP CLi |  
-|-----------|------------------------------| --- |--- |--- |--------------|-------|--- |------|--- |
-| wordpress | docker-compose-wordpress.yml | Linux | Apache | 12 / 6 | MySQL 8      | PHP 8 | X | X    | X |
-| lamp-8    | docker-compose-lamp-8.yml    | Linux | Apache | 12 / 6 | MySQL 8      | PHP 8 | X | X    | |
-| lamp-7    | docker-compose-lamp-7.yml    | Linux | Apache | 12 / 6 | MySQL 5.7    | PHP 7 | X | X    | |
-| lapp-8    | docker-compose-lapp-8.yml    | Linux | Apache | 12 / 6 | Postgres 11  | PHP 8 | X | X    | |
-| lapp-7    | docker-compose-lapp-7.yml    | Linux | Apache | 12 / 6 | Postgres 9.6 | PHP 7 | X | X    | |
+|-----------|------------------------------| --- |------------|--------------|--------------|-------|-- |------|--- |
+| wordpress | docker-compose-wordpress.yml | Linux | Apache     | 12 / 6       | MySQL 8      | PHP 8 | ✅ | ✅    | ✅ |
+| lamp-8    | docker-compose-lamp-8.yml    | Linux | Apache     | 12 / 6       | MySQL 8      | PHP 8 | ✅ | ✅    | ❌ |
+| lamp-7    | docker-compose-lamp-7.yml    | Linux | Apache     | 12 / 6       | MySQL 5.7    | PHP 7 | ✅ | ✅    | ❌ |
+| lapp-8    | docker-compose-lapp-8.yml    | Linux | Apache     | 12 / 6       | Postgres 11  | PHP 8 | ✅ | ✅    | ❌ |
+| lapp-7    | docker-compose-lapp-7.yml    | Linux | Apache     | 12 / 6       | Postgres 9.6 | PHP 7 | ✅ | ✅    | ❌ |
+| memcached | docker-compose-memcached.yml | Linux | ❌          | ❌            | ❌            | ❌     | ❌ | ❌    | ❌ |
+
 
 ## Prerequisites
 
@@ -107,7 +109,7 @@ then uncomment in `docker-compose.yml`
 ```
 
 copy postgres-on-init/00000-create-db.sql to repository
-```shell
+```shell    
 #!/bin/bash
 
 DBNAME=development
@@ -144,6 +146,32 @@ postgres:
 volumes:
   - "./postgres-on-init:/docker-entrypoint-initdb.d"
 ```
+
+## Adding Memcached
+
+Some projects may require use of memcached (e.g. clustered production cache store). You can add memcached with a few steps:
+
+1. Add the memcached environment to your project's docker-compose.yml:
+```yaml
+  memcached:
+    image: ghcr.io/deltasystems/docker-development-environments/lapp-8-memcached:latest
+    ports:
+      - "11211:11211"
+```
+
+2. Link the memcached environment into the needed container (e.g. web)
+```yaml
+  web:
+    links:
+      - 'memcached:memcached'
+```
+
+3. If adding memcached to an existing PHP project, verify that the PHP extensions is loaded (i.e. conf/php/custom.ini)
+```ini
+extension=memcached.so
+```
+
+You can now access memcached from your container using the hose `memcached` and port `11211`.
 
 ## Deployer Support
 

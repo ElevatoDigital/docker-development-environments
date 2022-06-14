@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  memcached:
+    image: ghcr.io/deltasystems/docker-development-environments/memcached:latest
+    build:
+      context: '.'
+      dockerfile: 'DockerfileMemcached'
+    ports:
+      - "11211:11211"
+  # link memcached to your web instance in your projects docker file
+  #web:
+  #  links:
+  #    - 'memcached:memcached'

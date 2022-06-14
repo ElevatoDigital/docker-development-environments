@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  # add this section to your project's docker-compose.yml
+  memcached:
+    image: ghcr.io/deltasystems/docker-development-environments/lapp-8-memcached:latest
+    ports:
+      - "11211:11211"
+  # link memcached into your containers (e.g. web) like so
+  #web:
+  #  links:
+  #    - 'memcached:memcached'
