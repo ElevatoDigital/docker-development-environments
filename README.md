@@ -154,7 +154,7 @@ Some projects may require use of memcached (e.g. clustered production cache stor
 1. Add the memcached environment to your project's docker-compose.yml:
 ```yaml
   memcached:
-    image: ghcr.io/deltasystems/docker-development-environments/lapp-8-memcached:latest
+    image: ghcr.io/deltasystems/docker-development-environments/memcached:latest
     ports:
       - "11211:11211"
 ```
