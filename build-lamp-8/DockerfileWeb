@@ -68,12 +68,16 @@ RUN docker-php-ext-install \
     gettext \
     mysqli \
     opcache \
+    pcntl \
     pdo \
     pdo_mysql \
     pdo_pgsql \
     soap \
     sockets \
     zip
+
+# configure additional php extensions
+RUN docker-php-ext-configure pcntl --enable-pcntl
 
 # adjust permissions
 RUN chown -R www-data:www-data /var/www/vhosts/myvhost

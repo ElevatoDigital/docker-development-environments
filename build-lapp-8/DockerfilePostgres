@@ -8,7 +8,7 @@
 #
 
 # reference: https://store.docker.com/images/postgres
-FROM postgres:11
+FROM postgres:14
 
 # app directory on the container
 #WORKDIR /var/lib/postgresql/data

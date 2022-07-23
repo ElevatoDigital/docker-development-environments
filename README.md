@@ -13,8 +13,8 @@ Rapidly start your local development using purpose built Docker containers for o
 | wordpress | docker-compose-wordpress.yml | Linux | Apache     | 12 / 6       | MySQL 8      | PHP 8 | ✅ | ✅    | ✅ |
 | lamp-8    | docker-compose-lamp-8.yml    | Linux | Apache     | 12 / 6       | MySQL 8      | PHP 8 | ✅ | ✅    | ❌ |
 | lamp-7    | docker-compose-lamp-7.yml    | Linux | Apache     | 12 / 6       | MySQL 5.7    | PHP 7 | ✅ | ✅    | ❌ |
-| lapp-8    | docker-compose-lapp-8.yml    | Linux | Apache     | 12 / 6       | Postgres 11  | PHP 8 | ✅ | ✅    | ❌ |
-| lapp-7    | docker-compose-lapp-7.yml    | Linux | Apache     | 12 / 6       | Postgres 9.6 | PHP 7 | ✅ | ✅    | ❌ |
+| lapp-8    | docker-compose-lapp-8.yml    | Linux | Apache     | 12 / 6       | Postgres 14  | PHP 8 | ✅ | ✅    | ❌ |
+| lapp-7    | docker-compose-lapp-7.yml    | Linux | Apache     | 12 / 6       | Postgres 11 | PHP 7 | ✅ | ✅    | ❌ |
 | memcached | docker-compose-memcached.yml | Linux | ❌          | ❌            | ❌            | ❌     | ❌ | ❌    | ❌ |
 
 
