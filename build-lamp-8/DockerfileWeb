@@ -43,8 +43,7 @@ RUN apt-get update \
     supervisor \
     vim \
     unzip \
-    wget \
-    wkhtmltopdf
+    wget
 
 # install python2 pip
 RUN wget https://bootstrap.pypa.io/pip/2.7/get-pip.py \
@@ -57,8 +56,9 @@ RUN python -m pip install future
 RUN curl -fsSL https://deb.nodesource.com/setup_12.x | bash - \
     && apt-get install -y nodejs build-essential
 
-# symlink wkhtmltopdf to match production
-RUN ln -s /usr/bin/wkhtmltopdf /usr/local/bin/wkhtmltopdf
+# install wkhtmltopdf
+RUN wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.bullseye_amd64.deb \
+    && apt install -y ./wkhtmltox_0.12.6.1-2.bullseye_amd64.deb
 
 # install additional php extensions
 RUN docker-php-ext-install \
