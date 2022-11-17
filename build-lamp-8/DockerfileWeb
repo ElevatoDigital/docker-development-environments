@@ -33,6 +33,7 @@ RUN apt-get update \
     libxml2-dev \
     less \
     net-tools \
+    rsync \
     sudo \
     imagemagick \
     libmagickwand-dev \
@@ -95,7 +96,7 @@ RUN php /root/composer-setup.php --install-dir=/usr/local/bin --filename=compose
 RUN php -r "unlink('/root/composer-setup.php');"
 
 # deployer
-RUN curl -LO --output-dir /root https://deployer.org/deployer.phar
+RUN curl -LO --output-dir /root https://github.com/deployphp/deployer/releases/download/v7.0.2/deployer.phar
 RUN mv /root/deployer.phar /usr/local/bin/dep
 RUN chmod +x /usr/local/bin/dep
 
