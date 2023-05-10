@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  web:
+    image: ghcr.io/deltasystems/docker-development-environments/node-16-web:latest
+    build:
+      context: '.'
+      dockerfile: 'DockerfileWeb'
+    ports:
+      - "3001:3000"
+    volumes:
+      #- "./conf/gelf/gelf.key:/root/.ssh/gelf.key.mounted"
+      - "./:/home/node/app"
+    expose:
+      - "3000"
+    command: "npm run start"
