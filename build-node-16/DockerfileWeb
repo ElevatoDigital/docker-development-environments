@@ -1,0 +1,59 @@
+##############################################
+# PHP App Container
+##############################################
+#
+# Creates a PHP container for hosting
+# WordPress and other PHP sites. See
+# docker-compose.yml for usage.
+#
+
+# container
+# reference: https://github.com/docker-library/docs/blob/master/php/README.md
+FROM node:16-buster
+
+# app directory on the container
+WORKDIR /home/node/app
+
+# volume directory for source code
+VOLUME ["/home/node/app"]
+
+# install additional packages
+RUN apt-get update \
+&& apt-get upgrade -y \
+&& apt-get install -y \
+    curl \
+    cron \
+    git \
+    libzip-dev \
+    libpq-dev \
+    libxml2-dev \
+    less \
+    net-tools \
+    rsync \
+    sudo \
+    imagemagick \
+    libmagickwand-dev \
+    libmemcached-dev \
+    python \
+    python-dev \
+    virtualenv \
+    supervisor \
+    vim \
+    unzip \
+    wget \
+    yarn
+
+# install wkhtmltopdf
+#RUN wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.bullseye_amd64.deb \
+#    && apt install -y ./wkhtmltox_0.12.6.1-2.bullseye_amd64.deb
+
+# adjust permissions
+#RUN chown -R www-data:www-data /var/www/vhosts/myvhost
+
+# gelf tunnel
+#COPY includes/ssh/config /root/.ssh/
+#RUN chmod 600 /root/.ssh/config
+#COPY includes/gelf/enable_gelf_tunnel.sh /usr/local/sbin/
+
+# gelf key
+#VOLUME ["/root/.ssh/gelf.key"]
