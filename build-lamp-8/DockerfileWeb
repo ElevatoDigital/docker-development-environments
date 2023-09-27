@@ -27,6 +27,7 @@ RUN apt-get update \
 && apt-get install -y \
     curl \
     cron \
+    dos2unix \
     git \
     libzip-dev \
     libpq-dev \
@@ -38,8 +39,8 @@ RUN apt-get update \
     imagemagick \
     libmagickwand-dev \
     libmemcached-dev \
-    python \
-    python-dev \
+    python-is-python3 \
+    python-dev-is-python3 \
     virtualenv \
     supervisor \
     vim \
@@ -53,9 +54,16 @@ RUN wget https://bootstrap.pypa.io/pip/2.7/get-pip.py \
 # install pip packages
 RUN python -m pip install future
 
-# install nodejs 12
-RUN curl -fsSL https://deb.nodesource.com/setup_12.x | bash - \
-    && apt-get install -y nodejs build-essential
+# install nodejs 17
+RUN curl -fsSL https://deb.nodesource.com/setup_17.x | bash - \
+    && apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y nodejs build-essential npm
+
+# install libssl1.1
+# https://askubuntu.com/questions/1403619/mongodb-install-fails-on-ubuntu-22-04-depends-on-libssl1-1-but-it-is-not-insta
+RUN wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb \
+    && dpkg -i ./libssl1.1_1.1.0g-2ubuntu4_amd64.deb
 
 # install wkhtmltopdf
 RUN wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.bullseye_amd64.deb \
@@ -80,6 +88,7 @@ RUN docker-php-ext-install \
 
 # configure additional php extensions
 RUN docker-php-ext-configure pcntl --enable-pcntl
+RUN docker-php-ext-configure intl --enable-intl
 
 # adjust permissions
 RUN chown -R www-data:www-data /var/www/vhosts/myvhost
@@ -105,9 +114,11 @@ RUN chmod +x /usr/local/bin/dep
 COPY includes/ssh/config /root/.ssh/
 RUN chmod 600 /root/.ssh/config
 COPY includes/gelf/enable_gelf_tunnel.sh /usr/local/sbin/
+RUN dos2unix /usr/local/sbin/enable_gelf_tunnel.sh
 
 # gelf key
-VOLUME ["/root/.ssh/gelf.key"]
+VOLUME ["/root/.ssh/gelf.key.mounted"]
+RUN if [ -f "/root/.ssh/gelf.key.mounted" ]; then chmod 600 /root/.ssh/gelf.key.mounted; fi
 
 # supervisor config
 VOLUME ["/etc/supervisor/conf.d"]
