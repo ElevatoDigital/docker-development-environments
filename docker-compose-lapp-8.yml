@@ -1,17 +1,17 @@
 version: '3.7'
 services:
   postgres:
-    image: ghcr.io/deltasystems/docker-development-environments/lapp-8-postgres:latest
+    image: ghcr.io/elevatodigital/docker-development-environments/lapp-8-postgres:latest
     ports:
       - "5433:5432"
     #volumes:
       #- "./postgres-on-init:/docker-entrypoint-initdb.d"
   memcached:
-    image: ghcr.io/deltasystems/docker-development-environments/lapp-8-memcached:latest
+    image: ghcr.io/elevatodigital/docker-development-environments/lapp-8-memcached:latest
     ports:
       - "11211:11211"
   web:
-    image: ghcr.io/deltasystems/docker-development-environments/lapp-8-web:latest
+    image: ghcr.io/elevatodigital/docker-development-environments/lapp-8-web:latest
     ports:
       - "8081:80"
     volumes:

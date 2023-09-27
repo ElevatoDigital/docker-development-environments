@@ -154,7 +154,7 @@ Some projects may require use of memcached (e.g. clustered production cache stor
 1. Add the memcached environment to your project's docker-compose.yml:
 ```yaml
   memcached:
-    image: ghcr.io/deltasystems/docker-development-environments/memcached:latest
+    image: ghcr.io/elevatodigital/docker-development-environments/memcached:latest
     ports:
       - "11211:11211"
 ```
@@ -207,7 +207,7 @@ publishing rebuilt images to the GitHub Container Registry. First, rebuild the c
 This method has been deprecated by GitHub and may give you issues in the future. 
 
 ```shell
-docker login ghcr.io # Use development+deploy@deltasys.com account in LastPass
+docker login ghcr.io # Use development+deploy@elevatodigital.com account in LastPass
 ```
 
 ### Logging into ghcr.io with Docker (personal access token)
@@ -216,7 +216,7 @@ This is the preferred method for authenticating with GitHub's container reposito
 
 Note: please refer to this documentation which these steps are derived from https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry
 
-1. Login with your GitHub account (or an account with write access to the `deltasystems/docker-development-environments` repository)
+1. Login with your GitHub account (or an account with write access to the `elevatodigital/docker-development-environments` repository)
 2. Settings > Developer Settings > Personal Access Tokens
 3. Generate New Token
 4. Select an appropriate Expiration setting

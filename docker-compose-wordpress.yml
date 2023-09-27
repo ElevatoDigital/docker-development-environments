@@ -1,14 +1,14 @@
 version: '3.7'
 services:
   mysql:
-    image: ghcr.io/deltasystems/docker-development-environments/wordpress-mysql:latest
+    image: ghcr.io/elevatodigital/docker-development-environments/wordpress-mysql:latest
     ports:
       - "3307:3306"
     #volumes:
       #- "./conf/mysql/custom.cnf:/etc/mysql/conf.d/custom.cnf"
       #- "./mysql-on-init:/docker-entrypoint-initdb.d"
   web:
-    image: ghcr.io/deltasystems/docker-development-environments/wordpress-web:latest
+    image: ghcr.io/elevatodigital/docker-development-environments/wordpress-web:latest
     ports:
       - "8081:80"
     volumes:

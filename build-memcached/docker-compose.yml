@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   memcached:
-    image: ghcr.io/deltasystems/docker-development-environments/memcached:latest
+    image: ghcr.io/elevatodigital/docker-development-environments/memcached:latest
     build:
       context: '.'
       dockerfile: 'DockerfileMemcached'

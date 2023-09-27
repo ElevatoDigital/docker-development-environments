@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   web:
-    image: ghcr.io/deltasystems/docker-development-environments/node-16-web:latest
+    image: ghcr.io/elevatodigital/docker-development-environments/node-16-web:latest
     build:
       context: '.'
       dockerfile: 'DockerfileWeb'
