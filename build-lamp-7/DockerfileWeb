@@ -16,7 +16,6 @@ WORKDIR /var/www/vhosts/myvhost
 
 # volume directory for source code
 VOLUME ["/var/www/vhosts/myvhost"]
-VOLUME ["/var/www/vhosts/myvhost/private/deploy.php"]
 
 # install additional apache modules
 RUN a2enmod rewrite
@@ -27,16 +26,21 @@ RUN apt-get update \
 && apt-get install -y \
     curl \
     cron \
+    dos2unix \
     git \
     libzip-dev \
     libpq-dev \
     libxml2-dev \
     less \
     net-tools \
+    rsync \
     sudo \
     imagemagick \
     libmagickwand-dev \
     libmemcached-dev \
+    python-is-python3 \
+    python-dev-is-python3 \
+    virtualenv \
     supervisor \
     vim \
     unzip \

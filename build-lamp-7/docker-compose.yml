@@ -23,7 +23,5 @@ services:
       - "./conf/cron/crontab.txt:/etc/cron.d/crontab"
       #- "./src:/var/www/vhosts/myvhost"
       - "./conf/gelf/gelf.key:/root/.ssh/gelf.key.mounted"
-      #- "./deploy.php:/var/www/vhosts/myvhost/private/deploy.php"
-      #- "./deployer.phar:/var/www/vhosts/myvhost/private/deployer.phar"
     links:
       - 'mysql:mysql'
