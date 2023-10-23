@@ -75,6 +75,7 @@ RUN chown -R www-data:www-data /var/www/vhosts/myvhost
 # install pecl extensions
 RUN pecl install apcu
 RUN pecl install memcached
+RUN pecl install mongodb && docker-php-ext-enable mongodb
 
 # php customizations
 VOLUME ["/usr/local/etc/php/conf.d/custom.ini"]
