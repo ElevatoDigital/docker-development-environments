@@ -18,7 +18,7 @@ services:
     ports:
       - "11211:11211"
   web:
-    image: ghcr.io/elevatodigital/docker-development-environments/lapp-8-web:latest
+    image: ghcr.io/elevatodigital/docker-development-environments/lapp-8-web:deployer-7.3.3
     build:
       context: '.'
       dockerfile: 'DockerfileWeb'
