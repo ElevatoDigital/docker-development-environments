@@ -9,7 +9,7 @@
 
 # container
 # reference: https://github.com/docker-library/docs/blob/master/php/README.md
-FROM php:8.1-apache
+FROM php:8.3-apache
 
 # app directory on the container
 WORKDIR /var/www/vhosts/myvhost
@@ -106,7 +106,7 @@ RUN php /root/composer-setup.php --install-dir=/usr/local/bin --filename=compose
 RUN php -r "unlink('/root/composer-setup.php');"
 
 # deployer
-RUN curl -LO --output-dir /root https://github.com/deployphp/deployer/releases/download/v7.0.2/deployer.phar
+RUN curl -LO --output-dir /root https://github.com/deployphp/deployer/releases/download/v7.4.0/deployer.phar
 RUN mv /root/deployer.phar /usr/local/bin/dep
 RUN chmod +x /usr/local/bin/dep
 
