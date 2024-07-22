@@ -27,6 +27,7 @@ RUN apt-get update \
 && apt-get install -y \
     curl \
     cron \
+    dos2unix \
     git \
     libzip-dev \
     libpq-dev \
@@ -89,9 +90,11 @@ RUN chmod +x /usr/local/bin/dep
 COPY includes/ssh/config /root/.ssh/
 RUN chmod 600 /root/.ssh/config
 COPY includes/gelf/enable_gelf_tunnel.sh /usr/local/sbin/
+RUN dos2unix /usr/local/sbin/enable_gelf_tunnel.sh
 
 # gelf key
-VOLUME ["/root/.ssh/gelf.key"]
+VOLUME ["/root/.ssh/gelf.key.mounted"]
+RUN if [ -f "/root/.ssh/gelf.key.mounted" ]; then chmod 600 /root/.ssh/gelf.key.mounted; fi
 
 # supervisor config
 VOLUME ["/etc/supervisor/conf.d"]
