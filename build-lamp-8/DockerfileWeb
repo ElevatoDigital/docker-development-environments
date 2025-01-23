@@ -33,6 +33,7 @@ RUN apt-get update \
     libpq-dev \
     libxml2-dev \
     less \
+    mariadb-client \
     net-tools \
     rsync \
     sudo \
