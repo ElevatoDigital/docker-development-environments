@@ -27,20 +27,26 @@ RUN apt-get update \
 && apt-get install -y \
     curl \
     cron \
+    dos2unix \
     git \
     libzip-dev \
     libpq-dev \
     libxml2-dev \
     less \
+    mariadb-client \
     net-tools \
+    rsync \
     sudo \
     imagemagick \
     libmagickwand-dev \
     libmemcached-dev \
+    python-is-python3 \
+    python-dev-is-python3 \
+    virtualenv \
     supervisor \
     vim \
     unzip \
-    wkhtmltopdf
+    wget
 
 # install nodejs 12
 RUN curl -fsSL https://deb.nodesource.com/setup_12.x | bash - \
