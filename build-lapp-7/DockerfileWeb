@@ -2,9 +2,7 @@
 # PHP App Container
 ##############################################
 #
-# Creates a PHP container for hosting
-# WordPress and other PHP sites. See
-# docker-compose.yml for usage.
+# See=docker-compose.yml for usage.
 #
 
 # container
@@ -33,7 +31,6 @@ RUN apt-get update \
     libpq-dev \
     libxml2-dev \
     less \
-    mariadb-client \
     net-tools \
     rsync \
     sudo \
@@ -90,13 +87,6 @@ RUN curl -LO https://deployer.org/deployer.phar
 RUN mv deployer.phar /usr/local/bin/dep
 RUN chmod +x /usr/local/bin/dep
 
-# gelf tunnel
-COPY includes/ssh/config /root/.ssh/
-RUN chmod 600 /root/.ssh/config
-COPY includes/gelf/enable_gelf_tunnel.sh /usr/local/sbin/
-
-# gelf key
-VOLUME ["/root/.ssh/gelf.key"]
 
 # supervisor config
 VOLUME ["/etc/supervisor/conf.d"]

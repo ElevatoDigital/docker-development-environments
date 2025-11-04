@@ -2,12 +2,11 @@
 # Memcached Container
 ##############################################
 #
-# Creates a Memcached container. See
-# docker-compose.yml for usage.
+# See docker-compose.yml for usage.
 #
 
-#reference: https://hub.docker.com/_/memcached
+# reference: https://hub.docker.com/_/memcached
 FROM memcached:latest
 
-#expose the service
+# expose the service
 EXPOSE 11211

@@ -2,14 +2,12 @@
 # PHP App Container
 ##############################################
 #
-# Creates a PHP container for hosting
-# WordPress and other PHP sites. See
-# docker-compose.yml for usage.
+# See docker-compose.yml for usage.
 #
 
-# container
+# parent container
 # reference: https://github.com/docker-library/docs/blob/master/php/README.md
-FROM php:8.3-apache
+FROM php:8.4-apache-bookworm
 
 # app directory on the container
 WORKDIR /var/www/vhosts/myvhost
@@ -39,14 +37,21 @@ RUN apt-get update \
     imagemagick \
     libmagickwand-dev \
     libmemcached-dev \
+    python-is-python3 \
+    python-dev-is-python3 \
+    virtualenv \
     supervisor \
     vim \
     unzip \
-    wkhtmltopdf
+    wget
 
 # install nodejs 12
-RUN curl -fsSL https://deb.nodesource.com/setup_12.x | bash - \
-    && apt-get install -y nodejs build-essential
+RUN curl -fsSL https://deb.nodesource.com/setup_12.x | bash -
+# pin Node.js to NodeSource
+RUN echo "Package: nodejs\nPin: origin \"deb.nodesource.com\"\nPin-Priority: 700" \
+       > /etc/apt/preferences.d/nodejs.pref
+# update cache policy and install node
+RUN apt-get update && apt-get install -y nodejs build-essential
 
 # symlink wkhtmltopdf to match production
 RUN ln -s /usr/bin/wkhtmltopdf /usr/local/bin/wkhtmltopdf
@@ -85,16 +90,6 @@ RUN php -r "unlink('composer-setup.php');"
 RUN curl -LO https://github.com/deployphp/deployer/releases/download/v7.4.0/deployer.phar
 RUN mv deployer.phar /usr/local/bin/dep
 RUN chmod +x /usr/local/bin/dep
-
-# gelf tunnel
-COPY includes/ssh/config /root/.ssh/
-RUN chmod 600 /root/.ssh/config
-COPY includes/gelf/enable_gelf_tunnel.sh /usr/local/sbin/
-RUN dos2unix /usr/local/sbin/enable_gelf_tunnel.sh
-
-# gelf key
-VOLUME ["/root/.ssh/gelf.key.mounted"]
-RUN if [ -f "/root/.ssh/gelf.key.mounted" ]; then chmod 600 /root/.ssh/gelf.key.mounted; fi
 
 # supervisor config
 VOLUME ["/etc/supervisor/conf.d"]
