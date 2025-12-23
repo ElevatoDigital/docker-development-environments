@@ -16,6 +16,5 @@ services:
       #- "./conf/supervisor:/etc/supervisor/conf.d"
       - "./conf/cron/crontab.txt:/etc/cron.d/crontab"
       - "./src:/var/www/vhosts/myvhost"
-      #- "./conf/gelf/gelf.key:/root/.ssh/gelf.key.mounted"
     links:
       - 'mysql:mysql'

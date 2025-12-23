@@ -8,7 +8,6 @@ services:
     ports:
       - "3001:3000"
     volumes:
-      #- "./conf/gelf/gelf.key:/root/.ssh/gelf.key.mounted"
       - "./example-app:/home/node/app"
     expose:
       - "3000"
